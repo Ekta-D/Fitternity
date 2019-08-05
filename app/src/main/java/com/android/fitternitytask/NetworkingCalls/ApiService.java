@@ -30,6 +30,7 @@ public class ApiService {
 
         apiInterface = retrofit.create(ApiInterface.class);
     }
+
     private OkHttpClient builder() {
         OkHttpClient.Builder okHttpClient = new OkHttpClient().newBuilder();
         okHttpClient.connectTimeout(20, TimeUnit.SECONDS);
@@ -57,6 +58,7 @@ public class ApiService {
 
         return okHttpClient.build();
     }
+
     private static HttpLoggingInterceptor interceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -67,5 +69,10 @@ public class ApiService {
     public void getPopularMovies(int page, Callback callback) {
         apiInterface.popularMovies(page).enqueue(callback);
     }
+
+    public void getTopRated(int page, Callback callback) {
+        apiInterface.getTopRatedMovies(page).enqueue(callback);
+    }
+
 
 }

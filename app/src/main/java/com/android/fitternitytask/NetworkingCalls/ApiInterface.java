@@ -16,4 +16,12 @@ public interface ApiInterface {
             @Query("page") int page);
 
 
+
+
+
+    @GET(Constants.MOVIE_PATH+"/top_rated")
+    Call<Movie> getTopRatedMovies(
+            @Query("page") int page
+    );
+
 }
