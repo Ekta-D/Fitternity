@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.fitternitytask.Adapter.MovieListAdapter;
 import com.android.fitternitytask.DataModel.Movie;
+import com.android.fitternitytask.MovieDetailActivity;
 import com.android.fitternitytask.NetworkingCalls.ApiService;
 import com.android.fitternitytask.R;
 import com.android.fitternitytask.Utils.Constants;
@@ -151,6 +152,8 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
 
     @Override
     public void onItemClick(View v, int position) {
+        MovieDetailActivity.start(getContext(), movieListAdapter.getItem(position));
+
     }
 
 
@@ -174,8 +177,8 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
                 return super.onContextItemSelected(item);
         }
     }
-    private void sort_popular()
-    {
+
+    private void sort_popular() {
         apiService = new ApiService();
         apiService.getPopularMovies(page, new Callback() {
             @Override
@@ -209,39 +212,38 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
         });
     }
 
-    private void sort_toprated()
-    {
-            apiService=new ApiService();
-            apiService.getTopRated(page, new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    Movie movie = (Movie) response.body();
+    private void sort_toprated() {
+        apiService = new ApiService();
+        apiService.getTopRated(page, new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Movie movie = (Movie) response.body();
 
-                    if (movie != null) {
-                        if (movieListAdapter != null) {
-                            movieListAdapter.clear();
-                            movieListAdapter.addAll(movie.getResults());
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
+                if (movie != null) {
+                    if (movieListAdapter != null) {
+                        movieListAdapter.clear();
+                        movieListAdapter.addAll(movie.getResults());
                     }
-
-                    if (refreshLayout != null)
-                        refreshLayout.setRefreshing(false);
+                } else {
+                    Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
                 }
 
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    if (t instanceof SocketTimeoutException) {
-                        Toast.makeText(getContext(), "Request Timeout. Please try again!", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
-                    }
+                if (refreshLayout != null)
+                    refreshLayout.setRefreshing(false);
+            }
 
-                    if (refreshLayout != null)
-                        refreshLayout.setRefreshing(false);
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                if (t instanceof SocketTimeoutException) {
+                    Toast.makeText(getContext(), "Request Timeout. Please try again!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
                 }
-            });
+
+                if (refreshLayout != null)
+                    refreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 }

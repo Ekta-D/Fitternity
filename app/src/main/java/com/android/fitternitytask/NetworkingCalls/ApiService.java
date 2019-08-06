@@ -73,6 +73,11 @@ public class ApiService {
     public void getTopRated(int page, Callback callback) {
         apiInterface.getTopRatedMovies(page).enqueue(callback);
     }
-
+    public void getMovieDetail(int movieId, Callback callback) {
+        apiInterface.movieDetail(movieId).enqueue(callback);
+    }
+    public void getReviews(int movieId, Callback callback) {
+        apiInterface.reviews(movieId).enqueue(callback);
+    }
 
 }
